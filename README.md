@@ -67,3 +67,31 @@ ON `cflogs` (
 ```sql
 LOAD DATA INFILE '/var/lib/mysql-files/your_file.csv' INTO TABLE cflogs FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 ROWS (date, time, size, client_ip, host, endpoint, status, user_agent, response_time);
 ```
+
+## Tips for SQLite
+
+ - Create a db using `touch logs.db`
+ - Download DBGate from [here](https://dbgate.org/download/)
+ - Open Created file. Create new table using query
+    ```sql
+    CREATE TABLE cflogs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    size INTEGER NOT NULL,
+    client_ip VARCHAR(15) NOT NULL,
+    host VARCHAR(100) NOT NULL,
+    endpoint VARCHAR(250) NOT NULL,
+    status INTEGER NOT NULL,
+    user_agent TEXT NOT NULL,
+    response_time REAL NOT NULL
+    );
+
+    CREATE INDEX index_date ON cflogs (date);
+    CREATE INDEX index_ep ON cflogs (endpoint);
+    CREATE INDEX index_host ON cflogs (host);
+    CREATE INDEX index_rst ON cflogs (response_time);
+    CREATE INDEX index_status ON cflogs (status);
+    CREATE INDEX index_time ON cflogs     (time);
+  ``` 
+ - Select import, select generate new table
